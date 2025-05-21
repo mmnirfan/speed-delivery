@@ -11,6 +11,8 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: '#00BFA6',         // or your brand color
+        'primary-dark': '#009C85',  // darker variant
       },
     },
   },
