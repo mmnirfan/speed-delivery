@@ -24,50 +24,58 @@ export default function HeroSlider({ collectionHandle }: HeroSliderProps) {
   const products = data.collectionByHandle.products.edges;
 
   return (
-    <Swiper
-      modules={[Autoplay, Pagination]}
-      autoplay={{ delay: 5000 }}
-      loop
-      pagination={{ clickable: true }}
-      className="w-full"
-    >
-      {products.map(({ node }: any) => (
-        <SwiperSlide key={node.id}>
-          <section className="flex flex-col-reverse md:flex-row items-center justify-between gap-10 px-6 md:px-20">
-            {/* Text */}
-            <div className="text-center md:text-left space-y-4 md:w-1/2 animate-fadeInUp">
-              <p className="text-sm uppercase font-semibold text-gray-600 tracking-widest">
-                Featured Product
-              </p>
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900">{node.title}</h1>
-              <Link
-                href={`/product/${node.handle}`}
-                className="inline-block mt-4 px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition"
-              >
-                View Product
-              </Link>
-            </div>
+    <div className="relative pb-12">
+      <Swiper
+        modules={[Autoplay, Pagination]}
+        autoplay={{ delay: 5000 }}
+        loop
+        pagination={{
+          el: '.custom-pagination',
+          clickable: true,
+        }}
+        className="w-full"
+      >
+        {products.map(({ node }: any) => (
+          <SwiperSlide key={node.id}>
+            <section className="flex flex-col-reverse md:flex-row items-center justify-between gap-10 px-6 md:px-20">
+              {/* Text */}
+              <div className="text-center md:text-left space-y-4 md:w-1/2 animate-fadeInUp">
+                <p className="text-sm uppercase font-semibold text-gray-600 tracking-widest">
+                  Featured Product
+                </p>
+                <h1 className="text-4xl md:text-5xl font-bold text-gray-900">{node.title}</h1>
+                <Link
+                  href={`/product/${node.handle}`}
+                  className="inline-block mt-4 px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition"
+                >
+                  View Product
+                </Link>
+              </div>
 
-            {/* Image */}
-            <div className="md:w-1/2">
-              {node.images?.edges?.[0]?.node?.url ? (
-                <Image
-                  src={node.images.edges[0].node.url}
-                  alt={node.images.edges[0].node.altText || node.title}
-                  width={600}
-                  height={400}
-                  className="mx-auto"
-                  priority
-                />
-              ) : (
-                <div className="w-full h-[300px] bg-gray-200 flex items-center justify-center text-gray-500">
-                  No Image
-                </div>
-              )}
-            </div>
-          </section>
-        </SwiperSlide>
-      ))}
-    </Swiper>
+              {/* Image */}
+              <div className="md:w-1/2">
+                {node.images?.edges?.[0]?.node?.url ? (
+                  <Image
+                    src={node.images.edges[0].node.url}
+                    alt={node.images.edges[0].node.altText || node.title}
+                    width={600}
+                    height={400}
+                    className="mx-auto"
+                    priority
+                  />
+                ) : (
+                  <div className="w-full h-[300px] bg-gray-200 flex items-center justify-center text-gray-500">
+                    No Image
+                  </div>
+                )}
+              </div>
+            </section>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      {/* Pagination container */}
+      <div className="custom-pagination flex justify-center gap-2 mt-6"></div>
+    </div>
   );
 }

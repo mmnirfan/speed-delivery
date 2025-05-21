@@ -152,7 +152,7 @@ export default function CartPage() {
               </button>
 
               <Link
-                href="/search"
+                href="/search/frontpage"
                 className="block text-center text-sm text-blue-600 hover:underline mt-2"
               >
                 Continue Shopping →
