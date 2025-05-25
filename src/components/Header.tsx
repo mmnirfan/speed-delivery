@@ -5,10 +5,19 @@ import Link from 'next/link';
 import { useAppSelector } from '@/store/hooks';
 import { useGetCollectionsQuery } from '@/features/shopifyApi';
 import { Menu, Transition, Disclosure } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import {
+  Bars3Icon,
+  XMarkIcon,
+  ShoppingBagIcon,
+  HeartIcon as OutlineHeart,
+} from '@heroicons/react/24/outline';
+import { useWishlist } from '@/hooks/useWishlist';
 
 export default function Header() {
   const cartCount = useAppSelector((state) => state.cart.totalQuantity);
+  const { wishlist } = useWishlist();
+  const wishlistCount = wishlist.length;
+
   const [isMounted, setIsMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -22,6 +31,7 @@ export default function Header() {
   return (
     <header className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3">
+        {/* Logo */}
         <Link href="/" className="text-xl font-bold text-primary">
           Speed Delivery
         </Link>
@@ -63,7 +73,31 @@ export default function Header() {
             </Transition>
           </Menu>
 
-          {/* Desktop Cart Icon */}
+          {/* Wishlist Icon */}
+          <Link href="/wishlist" className="relative flex items-center hover:text-primary">
+            <OutlineHeart className="w-5 h-5" />
+            {isMounted && wishlistCount > 0 && (
+              <span className="ml-1 text-sm">({wishlistCount})</span>
+            )}
+          </Link>
+
+          {/* Cart Icon */}
+          <Link href="/cart" className="relative flex items-center hover:text-primary">
+            <ShoppingBagIcon className="w-5 h-5" />
+            {isMounted && cartCount > 0 && (
+              <span className="ml-1 text-sm">({cartCount})</span>
+            )}
+          </Link>
+        </nav>
+
+        {/* Mobile Icons & Menu Toggle */}
+        <div className="md:hidden flex items-center space-x-4">
+          <Link href="/wishlist" className="relative flex items-center hover:text-primary">
+            <OutlineHeart className="w-5 h-5" />
+            {isMounted && wishlistCount > 0 && (
+              <span className="ml-1 text-sm">({wishlistCount})</span>
+            )}
+          </Link>
           <Link href="/cart" className="relative flex items-center hover:text-primary">
             <ShoppingBagIcon className="w-5 h-5" />
             {isMounted && cartCount > 0 && (
@@ -71,19 +105,14 @@ export default function Header() {
             )}
           </Link>
 
-        </nav>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden ml-4"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? (
-            <XMarkIcon className="w-6 h-6 text-gray-700" />
-          ) : (
-            <Bars3Icon className="w-6 h-6 text-gray-700" />
-          )}
-        </button>
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? (
+              <XMarkIcon className="w-6 h-6 text-gray-700" />
+            ) : (
+              <Bars3Icon className="w-6 h-6 text-gray-700" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Navigation */}
@@ -121,16 +150,6 @@ export default function Header() {
                 </>
               )}
             </Disclosure>
-
-            {/* Cart inside Mobile Menu */}
-            <Link
-              href="/cart"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center space-x-2 hover:text-primary"
-            >
-              <ShoppingBagIcon className="w-5 h-5" />
-              <span>Cart {isMounted && cartCount > 0 ? `(${cartCount})` : ''}</span>
-            </Link>
           </nav>
         </div>
       )}

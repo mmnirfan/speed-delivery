@@ -28,6 +28,7 @@ export default function ProductPage() {
   const [activeTab, setActiveTab] = useState('details');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const cartItems = useAppSelector((state) => state.cart.items);
+  const isInCart = cartItems.some(item => item.variantId === selectedVariant?.id);
 
   useEffect(() => {
     if (!variants.length) return;
@@ -43,8 +44,11 @@ export default function ProductPage() {
     if (!selectedVariant) return;
 
     const cartMatch = cartItems.find(item => item.variantId === selectedVariant.id);
-    setQuantity(cartMatch?.quantity || 1);
-  }, [selectedVariant, cartItems]);
+    if (cartMatch) {
+      setQuantity(cartMatch.quantity); // ✅ sync only if exists
+    }
+  }, [selectedVariant]);
+
 
   useEffect(() => {
     if (product?.images.edges.length && !selectedImage) {
@@ -62,6 +66,8 @@ export default function ProductPage() {
 
   const handleAddToCart = () => {
     if (!selectedVariant) return;
+    console.log("Dispatching to cart with quantity:", quantity); // debug
+
     dispatch(addToCart({
       id: product.id,
       variantId: selectedVariant.id,
@@ -188,9 +194,14 @@ export default function ProductPage() {
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
             <button
               onClick={handleAddToCart}
-              className="bg-black hover:bg-gray-800 text-white py-3 px-6 rounded-full transition duration-300 shadow hover:shadow-lg w-full"
+              disabled={isInCart}
+              className={`w-full py-3 px-6 rounded-full shadow transition duration-300 text-white font-medium
+                ${isInCart
+                  ? 'bg-green-600 cursor-not-allowed'
+                  : 'bg-black hover:bg-gray-800'
+                }`}
             >
-              Add to Cart
+              {isInCart ? '✓ Added to Cart' : 'Add to Cart'}
             </button>
             <button
               onClick={handleBuyNow}

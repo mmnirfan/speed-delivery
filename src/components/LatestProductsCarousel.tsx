@@ -5,9 +5,11 @@ import { useGetProductsQuery } from '@/features/shopifyApi';
 export default function LatestProductsCarousel() {
   const { data, isLoading } = useGetProductsQuery();
 
+  console.log('Latest Products:', data);
   if (isLoading) return <p>Loading...</p>;
 
   const products = data?.products?.edges || [];
+
 
   return (
     <section className="my-12">

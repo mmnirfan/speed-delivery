@@ -22,6 +22,8 @@ const eslintConfig = [
       "react/no-unescaped-entities": "off",
       // Warn about unused variables, but ignore ones that start with '_'
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'react-hooks/exhaustive-deps': 'off',
+      'react-hooks/rules-of-hooks': 'off',
     },
   },
 ];

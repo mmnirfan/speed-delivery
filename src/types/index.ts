@@ -51,3 +51,39 @@ export type GetCollectionsResponse = {
     }[];
   };
 };
+
+export type ProductNode = {
+  node: {
+    id: string;
+    title: string;
+    handle: string;
+    images: {
+      edges: { node: { url: string; altText: string | null } }[];
+    };
+    collections?: {
+      edges: { node: { title: string; handle: string } }[];
+    };
+  };
+};
+
+export interface CartItem {
+  id: string;
+  title: string;
+  handle: string;
+  image: string;
+  price: number;
+  variantId: string;
+  variantTitle: string;
+  quantity: number;
+}
+
+export interface WishlistItem {
+  id: string; // productId
+  variantId?: string;
+  title: string;
+  handle: string;
+  image: string;
+  price: number;
+  note?: string;
+  variantTitle?: string;
+}

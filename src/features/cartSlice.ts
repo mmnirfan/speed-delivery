@@ -1,15 +1,5 @@
+import { CartItem } from '@/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface CartItem {
-  id: string;
-  title: string;
-  handle: string;
-  image: string;
-  price: number;
-  variantId: string;
-  variantTitle: string;
-  quantity: number;
-}
 
 interface CartState {
   items: CartItem[];
@@ -39,14 +29,17 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action: PayloadAction<CartItem>) => {
-      const existing = state.items.find(i => i.variantId === action.payload.variantId);
+      const { variantId, quantity, price } = action.payload;
+      const existing = state.items.find(i => i.variantId === variantId);
+
       if (existing) {
-        existing.quantity += 1;
+        existing.quantity += quantity;
       } else {
-        state.items.push({ ...action.payload, quantity: 1 });
+        state.items.push({ ...action.payload });
       }
-      state.totalQuantity += 1;
-      state.totalPrice += action.payload.price;
+
+      state.totalQuantity += quantity;
+      state.totalPrice += price * quantity;
       persistCart(state);
     },
 

@@ -10,9 +10,9 @@ import HeroSliderSkeleton from '@/components/skeletons/HeroSliderSkeleton';
 import ProductCarouselSkeleton from '@/components/skeletons/ProductCarouselSkeleton';
 
 export default function HomePage() {
-  const { data, isLoading, error } = useGetProductsQuery(undefined);
-  console.log('SHOPIFY URL:', `https://${process.env.SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`);
-  console.log('ACCESS TOKEN:', process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN);
+  const { data, isLoading, error } = useGetProductsQuery();
+
+  console.log('Latest Products:', data);
 
   if (isLoading) return <HeroSliderSkeleton />;
 

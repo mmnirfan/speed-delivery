@@ -32,6 +32,8 @@ export default function CartPage() {
     quantity: item.quantity,
   }));
 
+  console.log('Cart Items:', cartItems);
+
   const handleCheckout = async () => {
     try {
       const response = await createCart(cartItems).unwrap();
@@ -58,7 +60,7 @@ export default function CartPage() {
       {items.length === 0 ? (
         <div className="text-gray-600">
           <p>Your cart is empty.</p>
-          <Link href="/search" className="text-blue-600 hover:underline mt-2 block">
+          <Link href="/search?q=home" className="text-blue-600 hover:underline mt-2 block">
             Continue Shopping →
           </Link>
         </div>
@@ -152,7 +154,7 @@ export default function CartPage() {
               </button>
 
               <Link
-                href="/search/frontpage"
+                href="/search?q=home"
                 className="block text-center text-sm text-blue-600 hover:underline mt-2"
               >
                 Continue Shopping →

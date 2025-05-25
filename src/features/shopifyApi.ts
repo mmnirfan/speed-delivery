@@ -100,49 +100,53 @@ export const shopifyApi = createApi({
       transformResponse: (response: any) => response.data,
     }),
 
-
-
-
-
     search: builder.query<any, string>({
       query: (term) => ({
-        url: '/', // ✅ Fix for search endpoint
+        url: '/',
         method: 'POST',
         body: {
           query: `
-            query SearchQuery($query: String!) {
-              products(first: 10, query: $query) {
-                edges {
-                  node {
-                    id
-                    title
-                    handle
-                    images(first: 1) {
-                      edges {
-                        node {
-                          url
-                          altText
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              collections(first: 5, query: $query) {
-                edges {
-                  node {
-                    id
-                    title
-                    handle
-                    image {
+        query SearchQuery($query: String!) {
+          products(first: 50, query: $query) {
+            edges {
+              node {
+                id
+                title
+                handle
+                images(first: 1) {
+                  edges {
+                    node {
                       url
                       altText
                     }
                   }
                 }
+                collections(first: 5) {
+                  edges {
+                    node {
+                      handle
+                      title
+                    }
+                  }
+                }
               }
             }
-          `,
+          }
+          collections(first: 50) {
+            edges {
+              node {
+                id
+                title
+                handle
+                image {
+                  url
+                  altText
+                }
+              }
+            }
+          }
+        }
+      `,
           variables: {
             query: term,
           },
@@ -150,6 +154,7 @@ export const shopifyApi = createApi({
       }),
       transformResponse: (response: any) => response.data,
     }),
+
     getProducts: builder.query<any, void>({
       query: () => ({
         url: '/',
@@ -176,9 +181,17 @@ export const shopifyApi = createApi({
                   amount
                 }
               }
+              variants(first: 1) {
+                edges {
+                  node {
+                    id
+                  }
+                }
+              }
             }
           }
         }
+
       }
     `,
         },
